@@ -5,6 +5,8 @@ class Node { // main class
     this.next = null;
   }
 }
+
+// SingleLinkedList 
 class SingleLinkedList {
   constructor() { // creating variables
     this.head = null;
@@ -78,13 +80,72 @@ class SingleLinkedList {
     }
     return current;
   }
-  set(index, val) {
+  set(index, val) { // replaces the index value
     var node = this.get(index);
     if (node) {
       node.val = val;
       return node;
     }
     return false
+  }
+  insert(index, val) {
+      if (index < 0 || index > this.length) {
+        return false;
+      }
+      if (index == this.length) {
+        return !!this.push(val) // !! added to return boolean value true  else returns node
+      }
+      if (index == 0) {
+        return !!this.unshift(val) // !! added to return boolean value true else returns node
+      }
+      var newNode = new Node(val);
+      var prevNode = this.get(index-1);
+      var restNode = prevNode.next;
+      prevNode.next = newNode;
+      newNode.next = restNode;
+      this.length++;
+      return true;
+  }
+  remove(index) {
+    if (index < 0 || index >= this.length) {
+        return undefined;
+      }
+      if (index == 0) {
+        return this.shift();
+      }
+      if (index == this.length-1) {
+        return this.pop()
+      }
+      var prevNode = this.get(index-1);
+      var removed = prevNode.next;
+      prevNode.next = removed.next;
+      this.length--;
+      return removed
+  }
+  reverse() {
+    var node = this.head; // creating temp head value 
+    // swapping head and tail
+    this.head = this.tail; 
+    this.tail = node;
+    // creating next and tail variables
+    var next;
+    var prev = null;
+    for(let i=0;i<this.length;i++) {
+      next = node.next; // stores node.next value in next
+      node.next = prev; // stores node.next to prev its null initially
+      prev = node // restores prev to node
+      node = next // sets the next to node
+    }
+    return this
+  }
+  print() { // prints the array values
+    let arr = []
+    var current = this.head;
+    while(current) {
+      arr.push(current.val);
+      current = current.next
+    }
+    return arr;
   }
 }
 let lst = new SingleLinkedList();
@@ -111,3 +172,14 @@ console.log(lst.get(2))
 console.log(lst)
 console.log(lst.set(2,10))
 console.log(lst)
+console.log(lst.insert(0,"starts"))
+console.log(lst.insert(3,"midd"))
+console.log(lst.get(3))
+console.log(lst)
+console.log(lst.remove(0))
+console.log(lst.remove(2))
+console.log(lst)
+console.log(lst.print())
+console.log(lst.reverse())
+console.log(lst)
+console.log(lst.print())
